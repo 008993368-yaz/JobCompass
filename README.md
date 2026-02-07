@@ -32,7 +32,6 @@ JobCompass/
 │   │   └── middleware/       # Express middleware (e.g. error handler)
 │   ├── .env.example
 │   └── package.json
-├── .cursorrules
 ├── .gitignore
 └── README.md
 ```
