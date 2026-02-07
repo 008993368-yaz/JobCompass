@@ -1,12 +1,12 @@
-import express from 'express';
+import express, { type Express, type Request, type Response } from 'express';
 import cors from 'cors';
+import morgan from 'morgan';
 import { errorHandler } from './middleware/errorHandler.js';
 import { healthRouter } from './routes/health.js';
 
-const app = express();
-const PORT = process.env.PORT ?? 3000;
+const app: Express = express();
 
-// CORS: allow frontend origin in development
+// CORS: allow frontend origin (Vite dev server)
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN ?? 'http://localhost:5173',
@@ -16,17 +16,20 @@ app.use(
 
 app.use(express.json());
 
+// HTTP request logging in development
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
 // Routes
 app.use('/api/health', healthRouter);
 
-// 404
-app.use((_req, res) => {
+// 404 handler
+app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: 'Not Found' });
 });
 
 // Error handling middleware (must be last)
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+export default app;

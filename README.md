@@ -121,6 +121,37 @@ docker compose up --build
 
 Stop with `Ctrl+C` or run in the background: `docker compose up -d --build`.
 
+#### Manual testing with Docker Compose
+
+1. **Build and start** (from repo root):
+
+   ```bash
+   docker compose up --build
+   ```
+
+   Wait until you see the backend log `Server running at http://localhost:3000` and nginx is ready. First build can take several minutes.
+
+2. **Test the frontend**  
+   Open in a browser: **http://localhost**  
+   You should see the JobCompass React app.
+
+3. **Test the backend directly**  
+   In a new terminal (or browser):
+
+   ```bash
+   curl http://localhost:3000/api/health
+   ```
+
+   Expected: `{"status":"ok","message":"Server is running"}`
+
+4. **Test API through the frontend**  
+   Open **http://localhost/api/health** in the browser.  
+   Same JSON response (nginx proxies `/api` to the backend).
+
+5. **Stop**  
+   In the terminal where `docker compose up` is running, press `Ctrl+C`.  
+   To stop when running in the background: `docker compose down`.
+
 ## Sprint Progress Tracker
 
 | Sprint | Focus                        | Status   | Notes |
